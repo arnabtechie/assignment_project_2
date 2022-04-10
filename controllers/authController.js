@@ -3,7 +3,7 @@ import User from "./../models/users.js";
 import { validationResult } from "express-validator";
 import catchAsync from "./../utils/catchAsync.js";
 import dotenv from "dotenv";
-dotenv.config({ path: "./config.env" });
+// dotenv.config({ path: "./config.env" });
 
 /**
  * @function login
