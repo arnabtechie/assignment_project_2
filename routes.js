@@ -1,29 +1,29 @@
-import { Router } from "express";
-import postController from "./controllers/postController.js";
-import { check } from "express-validator";
-import authController from "./controllers/authController.js";
-import auth from "./auth/auth.js";
+import { Router } from 'express';
+import { check } from 'express-validator';
+import postController from './controllers/postController.js';
+import authController from './controllers/authController.js';
+import auth from './auth/auth.js';
 
 const router = Router();
 
-//-----------------------------------------Unauthenticated-------------------------------------------------//
+// ------------------------------Unauthenticated---------------------------//
 router.post(
-  "/login",
+  '/login',
   [
-    check("username", "Please enter valid username").notEmpty(),
-    check("password", "Please enter valid password").notEmpty(),
+    check('username', 'Please enter valid username').notEmpty(),
+    check('password', 'Please enter valid password').notEmpty(),
   ],
-  authController.login
+  authController.login,
 );
-router.post("/add", postController.add);
-router.get("/fetch", postController.fetch);
+router.post('/add', postController.add);
+router.get('/fetch', postController.fetch);
 
-//-----------------------------------------Auth Middleware-------------------------------------------------//
+// ------------------------------Auth Middleware---------------------------//
 router.use(auth);
 
-//-----------------------------------------Authenticated-------------------------------------------------//
-router.get("/auth/logout", authController.logout);
-router.post("/auth/add", postController.add);
-router.get("/auth/fetch", postController.fetch);
+// ------------------------------Authenticated---------------------------//
+router.get('/auth/logout', authController.logout);
+router.post('/auth/add', postController.add);
+router.get('/auth/fetch', postController.fetch);
 
 export default router;

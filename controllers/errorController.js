@@ -1,5 +1,5 @@
 const sendError = (err, req, res) => {
-  if (req.originalUrl.startsWith("/api")) {
+  if (req.originalUrl.startsWith('/api')) {
     return res.status(500).json({
       status: err.status,
       errors: err.stack,
@@ -7,8 +7,8 @@ const sendError = (err, req, res) => {
   }
 };
 
-export default (err, req, res, next) => {
-  err.status = "fail";
+export default (err, req, res) => {
+  err.status = 'fail';
 
   sendError(err, req, res);
 };

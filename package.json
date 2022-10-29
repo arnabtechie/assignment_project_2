@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "eslint . --fix"
   },
   "keywords": [],
   "author": "Arnab Banerjee",
@@ -21,5 +22,10 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
   }
 }

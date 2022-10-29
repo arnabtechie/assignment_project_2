@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import User from "./../models/users.js";
-import { validationResult } from "express-validator";
-import catchAsync from "./../utils/catchAsync.js";
+import jwt from 'jsonwebtoken';
+import { validationResult } from 'express-validator';
+import User from '../models/users.js';
+import catchAsync from '../utils/catchAsync.js';
 
 /**
  * @function login
@@ -9,13 +9,12 @@ import catchAsync from "./../utils/catchAsync.js";
  * @param req
  * @param res
  * @returns {success or fail}
- **/
-
-const login = catchAsync(async (req, res, next) => {
+ */
+const login = catchAsync(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send({
-      status: "fail",
+      status: 'fail',
       error: errors,
     });
   }
@@ -25,8 +24,8 @@ const login = catchAsync(async (req, res, next) => {
 
   if (!user || user.password !== password.toString()) {
     return res.status(400).send({
-      status: "fail",
-      message: "invalid username or password",
+      status: 'fail',
+      message: 'invalid username or password',
     });
   }
 
@@ -34,15 +33,15 @@ const login = catchAsync(async (req, res, next) => {
 
   user.password = undefined;
 
-  res.cookie("jwt", token, {
+  res.cookie('jwt', token, {
     httpOnly: true,
-    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
   return res.status(200).send({
-    status: "success",
+    status: 'success',
     data: user,
-    token: token,
+    token,
   });
 });
 
@@ -52,14 +51,14 @@ const login = catchAsync(async (req, res, next) => {
  * @param req
  * @param res
  * @returns {success or fail}
- **/
+ */
 
 const logout = catchAsync(async (req, res) => {
-  res.cookie("jwt", "loggedout", {
+  res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  return res.status(200).json({ status: "success" });
+  return res.status(200).json({ status: 'success' });
 });
 
 export default { login, logout };

@@ -1,23 +1,24 @@
-import jwt from "jsonwebtoken";
-import User from "../models/users.js";
-import catchAsync from "../utils/catchAsync.js";
-import dotenv from "dotenv";
-dotenv.config({ path: "./config.env" });
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import User from '../models/users.js';
+import catchAsync from '../utils/catchAsync.js';
+
+dotenv.config({ path: './config.env' });
 
 export default catchAsync(async (req, res, next) => {
   let token = null;
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
+    req.headers.authorization
+    && req.headers.authorization.startsWith('Bearer')
   ) {
-    token = req.headers.authorization.split(" ")[1];
+    token = req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   } else if (
-    req.headers.cookie &&
-    req.headers.authorization.startsWith("jwt")
+    req.headers.cookie
+    && req.headers.authorization.startsWith('jwt')
   ) {
-    token = req.headers.cookie.split("=")[1];
+    token = req.headers.cookie.split('=')[1];
   }
 
   if (token) {
@@ -29,16 +30,16 @@ export default catchAsync(async (req, res, next) => {
         resolve(decoded);
       });
     })
-      .then(async (decoded) => {
+      .then(async decoded => {
         const user = await User.findOne(
           { _id: decoded._id },
-          { password: 0 }
+          { password: 0 },
         );
 
         if (!user) {
           return res.status(403).send({
-            status: "fail",
-            errors: "Invalid user or token",
+            status: 'fail',
+            errors: 'Invalid user or token',
           });
         }
 
@@ -46,18 +47,17 @@ export default catchAsync(async (req, res, next) => {
 
         next();
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
         return res.status(401).send({
-          status: "fail",
+          status: 'fail',
           errors: err,
         });
       });
   } else {
-    // console.log(token);
     return res.status(401).send({
-      status: "fail",
-      errors: "Missing authorization token",
+      status: 'fail',
+      errors: 'Missing authorization token',
     });
   }
 });
